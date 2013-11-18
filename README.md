@@ -1,7 +1,7 @@
 pybusta
 =======
 
-A Python library and samle CLI utility to access, index, query and extract files from local Flibusta mirror (e.g.: magnet:?xt=urn:btih:1077f09ffb0a146f25960a8f43cf32087bfc5deb )
+A Python library and sample CLI utility (flishell.py) to access, index, query and extract files from local Flibusta mirror (e.g.: magnet:?xt=urn:btih:1077f09ffb0a146f25960a8f43cf32087bfc5deb )
 
 FliShell CLI installation:
 
