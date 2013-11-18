@@ -10,7 +10,8 @@ FliShell CLI installation:
 3. Create directory "data" inside cloned directory
 4. Copy/symlink fb2.Flibusta.Net into data directory
 5. Use: 
+# Query a local search index. Creates one if absent.
 	./flishell.py search --title "example book" --author "example author"
-		- Choose a book to extract, copy id.
+# Choose a book to extract, copy id (e.g. 12345)
+# Extract a book chosen into data/books directory
 	./flishell.py extract --id 12345
-		- extracts a book chosen into data/books directory
