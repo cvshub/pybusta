@@ -20,7 +20,7 @@ def main():
     args = parser.parse_args()
     book_index = lib.bookindex.BookIndex()
     if args.action == 'extract':
-        book_index.ExtractBook(args.id)
+        book_index.extract_book(args.id)
     elif args.action == 'search':
         query = {}
         if args.author:
