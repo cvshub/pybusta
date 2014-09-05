@@ -1,12 +1,9 @@
-#!/usr/book_indexn/python
+#!/usr/bin/python
 """ Command-line utility to work with pybusta database """
 # -*- coding: utf-8 -*-
 
-import sys
 import argparse
-sys.path.append('lib')
-import bookindex
-
+import lib.bookindex
 
 def main():
     """ main """
@@ -21,7 +18,7 @@ def main():
         help='set book language to query. CASE SENSITIVE')
     parser.add_argument('--id', help='set book id to extract')
     args = parser.parse_args()
-    book_index = bookindex.BookIndex()
+    book_index = lib.bookindex.BookIndex()
     if args.action == 'extract':
         book_index.ExtractBook(args.id)
     elif args.action == 'search':
@@ -32,6 +29,6 @@ def main():
             query['title'] = unicode(args.title, 'utf-8').upper()
         if args.lang:
             query['language'] = args.lang
-        book_index.QueryFTIndex(query)
+        book_index.query_fulltext_index(query)
 if __name__ == "__main__":
     main()
