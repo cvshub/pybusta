@@ -77,7 +77,7 @@ class BookIndex(object):
         """  get parsed index file metadata """
         with open(os.path.join(self.config['tmpPath'], index_file)) as infile:
             while 1:
-                line = infile.readline()
+                line = unicode(infile.readline(),'utf-8')
                 if not line:
                     break
                 book_metadata = self._parse_file_metadata(line)
@@ -102,12 +102,9 @@ class BookIndex(object):
             format,language,date_added,size) values (?,?,?,?,?,?,?,?,?)'''
         query_data = (
             mdt['bookid'],
-            unicode(
-                mdt['author'].replace(',', ' ').replace(':', '').rstrip(),
-                'utf-8'
-                ),
+            mdt['author'].replace(',', ' ').replace(':', '').rstrip(),
             mdt['genre'].replace(':', ''),
-            unicode(mdt['title'], 'utf-8'),
+            mdt['title'],
             os.path.basename(index_filename)[:-4]+".zip",
             mdt['format'],
             mdt['language'],
@@ -123,11 +120,8 @@ class BookIndex(object):
             values (?,?,?,?)'''
         query_data = (
             mdt['bookid'],
-            unicode(
-                mdt['author'].replace(',', ' ').replace(':', '').rstrip(),
-                'utf-8'
-                ).upper(),
-            unicode(mdt['title'], 'utf-8').upper(), mdt['language'])
+                mdt['author'].replace(',', ' ').replace(':', '').rstrip().upper(),
+		mdt['title'].upper(), mdt['language'])
         try:
             cursor.execute(query, query_data)
         except Exception:
