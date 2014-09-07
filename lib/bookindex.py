@@ -47,7 +47,8 @@ class BookIndex(object):
             pass
         db_conn = sqlite3.connect(
             os.path.join(self.config['dbPath'], 'fliShellIndex.db'))
-        db_conn.text_factory = str
+        db_conn.text_factory = unicode
+        db_conn.row_factory = sqlite3.Row
         self.db_conn = db_conn
     def _create_index_database(self):
         """ method to create index database file """
@@ -199,14 +200,17 @@ class BookIndex(object):
             query_cond.append(query_part)
         query = " ".join(query_cond)
         return query
-    def query_index(self, args):
+    def query_index(self, args, response_type=str):
         """ method to query database index """
         query = "select * from book_index where %s" % self._build_query(args)
         cursor = self._get_db_cursor()
         cursor.execute(query)
         for row in cursor.fetchall():
-            print "%d [%s]: %s- %s" % ((row[0], row[6], row[1], row[3]))
-    def query_fulltext_index(self, args):
+            if response_type == str:
+                yield "%d [%s]: %s - %s" % ((row[0], row[6], row[1], row[3]))
+            elif response_type == dict:
+                yield dict(row)
+    def query_fulltext_index(self, args, response_type=str):
         """ method to query database FTS index """
         query = "select id from book_search where book_search match '%s'\
             limit 1000" % self._build_fulltext_query(args)
@@ -218,7 +222,10 @@ class BookIndex(object):
         query = "select * from book_index where id in (%s)" % ",".join(ids)
         cursor.execute(query)
         for row in cursor.fetchall():
-            print "%d [%s]: %s - %s" % ((row[0], row[6], row[1], row[3]))
+            if response_type == str:
+                yield "%d [%s]: %s - %s" % ((row[0], row[6], row[1], row[3]))
+            elif response_type == dict:
+                yield dict(row)
     def _get_db_cursor(self):
         """ method to get db cursor """
         if not self.db_conn:
@@ -241,15 +248,12 @@ class BookIndex(object):
         book_archive.extract(
             str(book_id)+"."+book_format,
             self.config['extractPath'])
+        src_book_name = str(book_id)+"."+book_format
+        dst_book_name = ("%s - %s" % (author, title))\
+            .replace(' ', '_')+"."+book_format
         os.rename(
-            os.path.join(
-                self.config['extractPath'],
-                str(book_id)+"."+book_format
-                ),
-            os.path.join(
-                self.config['extractPath'],
-                ("%s- %s" % (author, title)).replace(' ', '_')+"."+book_format
-                )
+            os.path.join(self.config['extractPath'], src_book_name),
+            os.path.join(self.config['extractPath'], dst_book_name)
             )
-        return 1
+        return dst_book_name
 
