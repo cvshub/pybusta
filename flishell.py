@@ -20,7 +20,7 @@ def main():
     args = parser.parse_args()
     book_index = lib.bookindex.BookIndex()
     if args.action == 'extract':
-        filename=book_index.extract_book(args.id)
+        filename = book_index.extract_book(args.id)
         print filename
     elif args.action == 'search':
         query = {}
@@ -30,7 +30,7 @@ def main():
             query['title'] = unicode(args.title, 'utf-8').upper()
         if args.lang:
             query['language'] = args.lang
-        for result in book_index.query_fulltext_index(query,response_type=str):
+        for result in book_index.query_fulltext_index(query, response_type=str):
             print result
 if __name__ == "__main__":
     main()

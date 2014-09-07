@@ -1,4 +1,5 @@
 <%include file="header.mak"/>
+<a href="/">На главную</a>
 <table>
 	<tr>
 	<td>id</td><td width=20%%>Автор</td><td>Название</td><td>Язык</td><td>Размер</td>
@@ -15,4 +16,5 @@
 	</tr>   
 	% endfor
 </table>
+<a href="/">На главную</a>
 <%include file="footer.mak"/>
